@@ -15,6 +15,38 @@ clientNecDao.login(process.env.BOT_TOKEN_NEC_DAO);
 const puppeteer = require('puppeteer');
 var daoHolders = 138;
 
+
+let DAObalance = 11000000;
+let DAONecBalance = 66000000;
+setInterval(function () {
+    try {
+        https.get('https://api.bloxy.info/address/balance?address=0xDa490e9acc7f7418293CFeA1FF2085c60d573626&chain=eth&key=ACCVnTqQ9YRKK&format=structure', (resp) => {
+            let data = '';
+
+            // A chunk of data has been recieved.
+            resp.on('data', (chunk) => {
+                data += chunk;
+            });
+
+            // The whole response has been received. Print out the result.
+            resp.on('end', () => {
+                try {
+                    let result = JSON.parse(data);
+                    DAONecBalance = result[0].balance;
+                    DAObalance = DAONecBalance * necPrice;
+                } catch (e) {
+                    console.log(e);
+                }
+            });
+
+        }).on("error", (err) => {
+            console.log("Error: " + err.message);
+        });
+    } catch (e) {
+        console.log(e);
+    }
+}, 60 * 1000 * 1);
+
 setInterval(function () {
 
     clientNecDao.guilds.cache.forEach(function (value, key) {
