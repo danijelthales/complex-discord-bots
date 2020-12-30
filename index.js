@@ -75,3 +75,22 @@ function delay(time) {
 
 setTimeout(getDaoHolders, 60 * 1000 * 1);
 setInterval(getDaoHolders, 60 * 1000 * 60 * 5);
+
+function getNumberLabel(labelValue) {
+
+    // Nine Zeroes for Billions
+    return Math.abs(Number(labelValue)) >= 1.0e+9
+
+        ? Math.round(Math.abs(Number(labelValue)) / 1.0e+9) + "B"
+        // Six Zeroes for Millions
+        : Math.abs(Number(labelValue)) >= 1.0e+6
+
+            ? Math.round(Math.abs(Number(labelValue)) / 1.0e+6) + "M"
+            // Three Zeroes for Thousands
+            : Math.abs(Number(labelValue)) >= 1.0e+3
+
+                ? Math.round(Math.abs(Number(labelValue)) / 1.0e+3) + "K"
+
+                : Math.abs(Number(labelValue));
+
+}
