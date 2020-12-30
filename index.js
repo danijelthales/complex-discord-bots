@@ -13,6 +13,36 @@ const clientNecDao = new Discord.Client();
 clientNecDao.login(process.env.BOT_TOKEN_NEC_DAO);
 
 const puppeteer = require('puppeteer');
+
+
+let necPrice = 0.17;
+setInterval(function () {
+    https.get('https://api.coingecko.com/api/v3/coins/nectar-token', (resp) => {
+        let data = '';
+
+        // A chunk of data has been recieved.
+        resp.on('data', (chunk) => {
+            data += chunk;
+        });
+
+        // The whole response has been received. Print out the result.
+        resp.on('end', () => {
+            try {
+                let result = JSON.parse(data);
+                necPrice = result.market_data.current_price.usd;
+                necPrice = Math.round(((necPrice * 1.0) + Number.EPSILON) * 1000) / 1000;
+            } catch (e) {
+                console.log(e);
+            }
+
+        });
+
+    }).on("error", (err) => {
+        console.log("Error: " + err.message);
+    });
+
+}, 60 * 1000 * 2);
+
 var daoHolders = 138;
 
 
